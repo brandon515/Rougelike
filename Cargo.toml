@@ -1,0 +1,5 @@
+[package]
+
+name = "rougelike"
+version = "0.0.1"
+authors = ["Brandon Haley <brandon.haley94@gmail.com>"]
