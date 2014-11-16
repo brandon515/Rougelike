@@ -4,6 +4,10 @@ name = "rougelike"
 version = "0.0.1"
 authors = ["Brandon Haley <brandon.haley94@gmail.com>"]
 
+[[bin]]
+
+name = "rouge"
+
 [dependencies.ncurses]
 
 git = "https://github.com/jeaye/ncurses-rs.git"
