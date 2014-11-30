@@ -1,3 +1,5 @@
-trait Actor{
-    fn update(Option<u32>) -> Result<bool, String>;
+use super::renderable;
+
+struct Actor{
+    render: renderable::Renderable,
 }

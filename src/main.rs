@@ -1,45 +1,47 @@
 extern crate ncurses;
 
-fn setup() -> Receiver<String>{
+fn get_exit_key() -> i32{
+    ncurses::KEY_F(2)
+}
+
+fn setup(){
     ncurses::initscr();
     ncurses::noecho();
     ncurses::raw();
     ncurses::keypad(ncurses::stdscr, true);
     ncurses::curs_set(ncurses::CURSOR_INVISIBLE);
-    let (inputSender, inputRec) = channel();
+    ncurses::ll::WINDOW win = ncurses::newwin(20, 20, 20, 20);
+    ncurses::box(win, 0, 0);
+    ncurses::wrefresh(win);
+   /* let (input_sender, input_rec) = channel::<i32>();
     spawn(proc(){
-        sender.send(ncurses::getch());
+        loop{
+            let ch = ncurses::getch();
+            input_sender.send(ch as i32);
+            if ch == get_exit_key(){
+                break;
+            }
+        }
     });
-    inputRec
+    input_rec*/
 }
 
-fn is_running(rec: Receiver<>) -> bool{
-    let res = rec.try_recv().ok();
-    let ch = match res{
-        Some(x) => x,
-        None    => pass,
-    };
-    ncurses::attron(ncurses::A_BLINK());
-    ncurses::addch();
-    ncurses::attroff(ncurses::A_BLINK());
-    if ch == ncurses::KEY_F(2){
-        return false;
-    }
-    return true;
-}
-
-fn main_loop(){
-    ncurses::refresh();
-}
 
 fn clean_up(){
     ncurses::endwin();
 }
 
 fn main() {
-    let ch = setup();
-    while is_running(ch){
-        main_loop();
+    setup();
+    loop{
+        let ch = ncurses::getch();
+        if ch == get_exit_key(){
+            break;
+        }
+        /*else if ch == ncurses::KEY_RESIZE{
+        }*/
+        ncurses::printw(ncurses::LINES.to_string().as_slice());
+        ncurses::refresh();
     }
     clean_up();
 }
